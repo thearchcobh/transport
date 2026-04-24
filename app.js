@@ -1,7 +1,6 @@
 const DATA_URL = 'data/cobh-trains.json';
 
 const departuresTable = document.getElementById('departuresTable');
-const departureCount = document.getElementById('departureCount');
 const statusText = document.getElementById('statusText');
 const statusDot = document.getElementById('statusDot');
 const lastUpdated = document.getElementById('lastUpdated');
@@ -23,7 +22,6 @@ const BUS_SCHEDULES = {
 function rowHtml(train) {
   const due = train.due_in !== null && train.due_in !== undefined ? train.due_in + ' min' : '-';
   const expected = train.expected_departure;
-  const scheduled = train.scheduled_departure;
   const late = Number(train.late || 0);
   const status = late > 0 ? '+' + late + ' min' : 'On time';
   const statusClass = late > 0 ? 'late' : 'on-time';
@@ -32,7 +30,6 @@ function rowHtml(train) {
     <div class="table-row">
       <div>
         <div class="destination">${train.destination || '-'}</div>
-        <div class="subtext">Scheduled: ${scheduled || '-'}</div>
       </div>
       <div class="due">${due}</div>
       <div>${expected || '-'}</div>
@@ -52,11 +49,47 @@ function renderTrainTable(el, trains) {
   el.innerHTML = heading + trains.slice(0, 6).map(train => rowHtml(train)).join('');
 }
 
-function formatUpdatedAt(value) {
-  if (!value) return 'Last updated: -';
+function parseUpdatedAt(value) {
+  if (!value) return null;
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return 'Last updated: ' + value;
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function formatUpdatedAt(value) {
+  const date = parseUpdatedAt(value);
+  if (!date) return 'Last updated: -';
   return 'Last updated: ' + date.toLocaleTimeString('en-IE', { hour: '2-digit', minute: '2-digit' });
+}
+
+function freshnessMinutes(value) {
+  const date = parseUpdatedAt(value);
+  if (!date) return null;
+  return Math.floor((Date.now() - date.getTime()) / 60000);
+}
+
+function updateTrainFreshness(data) {
+  const age = freshnessMinutes(data.updated_at);
+
+  if (data.ok === false || age === null) {
+    statusText.textContent = 'Train updates are temporarily unavailable.';
+    statusDot.className = 'status-dot error';
+    return;
+  }
+
+  if (age <= 20) {
+    statusText.textContent = 'Showing latest available Cobh station data.';
+    statusDot.className = 'status-dot ok';
+    return;
+  }
+
+  if (age <= 60) {
+    statusText.textContent = 'Train data may be delayed.';
+    statusDot.className = 'status-dot warn';
+    return;
+  }
+
+  statusText.textContent = 'Train data is out of date.';
+  statusDot.className = 'status-dot error';
 }
 
 function getDublinNow() {
@@ -144,20 +177,10 @@ async function loadBoard() {
     const departures = data.departures || [];
 
     renderTrainTable(departuresTable, departures);
-
-    departureCount.textContent = departures.length + ' found';
     lastUpdated.textContent = formatUpdatedAt(data.updated_at);
-
-    if (data.ok === false) {
-      statusText.textContent = 'Train updates are temporarily unavailable.';
-      statusDot.className = 'status-dot error';
-    } else {
-      statusText.textContent = 'Showing latest available Cobh station data.';
-      statusDot.className = 'status-dot ok';
-    }
+    updateTrainFreshness(data);
   } catch (error) {
     renderTrainTable(departuresTable, []);
-    departureCount.textContent = '-';
     statusText.textContent = 'Train updates are temporarily unavailable.';
     statusDot.className = 'status-dot error';
     lastUpdated.textContent = 'Last updated: -';
