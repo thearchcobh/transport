@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cobh Train Times | The Arch</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="board" aria-live="polite">
+    <header class="board-header">
+      <div>
+        <p class="eyebrow">Irish Rail updates</p>
+        <h1>Cobh train times</h1>
+      </div>
+      <div class="brand">The Arch</div>
+    </header>
+
+    <section class="status-card" id="statusCard">
+      <div>
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">Loading train updates…</span>
+      </div>
+      <div id="lastUpdated">Last updated: —</div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-title">
+        <h2>Departures from Cobh</h2>
+        <span id="departureCount">—</span>
+      </div>
+      <div class="table" id="departuresTable">
+        <div class="table-row table-head">
+          <div>Destination</div>
+          <div>Due</div>
+          <div>Expected</div>
+          <div>Status</div>
+        </div>
+        <div class="empty">Loading…</div>
+      </div>
+    </section>
+
+    <section class="section-block compact">
+      <div class="section-title">
+        <h2>Arrivals into Cobh</h2>
+        <span id="arrivalCount">—</span>
+      </div>
+      <div class="table" id="arrivalsTable">
+        <div class="table-row table-head">
+          <div>Origin</div>
+          <div>Due</div>
+          <div>Expected</div>
+          <div>Status</div>
+        </div>
+        <div class="empty">Loading…</div>
+      </div>
+    </section>
+
+    <footer>
+      <p>Times use Irish Rail real-time data where available. For the Cork–Cobh line, some services may show scheduled times only.</p>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
