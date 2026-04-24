@@ -58,7 +58,7 @@ function rowHtml(train) {
 }
 
 function renderTrainTable(el, trains) {
-  const heading = '<div class="table-row table-head"><div>Destination</div><div>Due</div><div>Expected</div><div>Status</div></div>';
+  const heading = '<div class="table-row table-head"><div>Dest.</div><div>Due</div><div>Expected</div><div>Status</div></div>';
 
   if (!trains.length) {
     el.innerHTML = heading + '<div class="empty">No upcoming services found.</div>';
@@ -161,7 +161,7 @@ function nextBusDepartures(scheduleData, count = 4) {
 }
 
 function renderBusTable(el, services) {
-  const heading = '<div class="table-row table-head bus-row"><div>Destination</div><div>Due</div><div>Departure</div></div>';
+  const heading = '<div class="table-row table-head bus-row"><div>Dest.</div><div>Due</div><div>Departure</div></div>';
   if (!services.length) {
     el.innerHTML = heading + '<div class="empty">No scheduled departures found.</div>';
     return;
