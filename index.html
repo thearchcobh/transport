@@ -10,7 +10,7 @@
   <main class="board" aria-live="polite">
     <header class="board-header compact-header">
       <div>
-        <p class="eyebrow">Cobh transport updates</p>
+        <p class="eyebrow">Cobh transport</p>
       </div>
       <div class="brand">The Arch</div>
     </header>
@@ -19,16 +19,13 @@
       <div class="section-title">
         <div>
           <h2>Train departures from Cobh</h2>
-          <p class="section-note">
-            <span class="status-dot" id="statusDot"></span>
-            <span id="statusText">Loading train updates…</span>
-          </p>
+          <p class="section-note visually-hidden" id="statusText">Loading train updates…</p>
         </div>
-        <span id="lastUpdated">Last updated: —</span>
+        <span class="updated-with-dot"><span class="status-dot" id="statusDot"></span><span id="lastUpdated">Last updated: —</span></span>
       </div>
       <div class="table" id="departuresTable">
         <div class="table-row table-head">
-          <div>Destination</div>
+          <div>Dest.</div>
           <div>Due</div>
           <div>Expected</div>
           <div>Status</div>
@@ -49,7 +46,7 @@
         <span id="busUpdated">Scheduled</span>
       </div>
       <div class="table bus-table" id="busToCorkTable">
-        <div class="table-row table-head bus-row"><div>Destination</div><div>Due</div><div>Departure</div></div>
+        <div class="table-row table-head bus-row"><div>Dest.</div><div>Due</div><div>Departure</div></div>
         <div class="empty">Loading…</div>
       </div>
     </section>
