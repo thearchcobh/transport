@@ -1,4 +1,5 @@
 const DATA_URL = 'data/cobh-trains.json';
+const IRISH_RAIL_URL = 'https://api.irishrail.ie/realtime/realtime.asmx/getStationDataByNameXML_withNumMins?StationDesc=Cobh&NumMins=90';
 
 const departuresTable = document.getElementById('departuresTable');
 const statusText = document.getElementById('statusText');
@@ -18,6 +19,70 @@ const BUS_SCHEDULES = {
     toCork: ['07:50','08:50','09:50','10:50','11:50','12:50','13:50','14:50','15:50','16:50','17:50','18:50','19:50','20:50','21:50','22:35']
   }
 };
+
+function textFromXml(parent, tagName) {
+  const node = parent.getElementsByTagName(tagName)[0];
+  return node && node.textContent ? node.textContent.trim() : null;
+}
+
+function xmlTrainToObject(item) {
+  const due = Number(textFromXml(item, 'Duein'));
+  const late = Number(textFromXml(item, 'Late'));
+
+  return {
+    train_code: textFromXml(item, 'Traincode'),
+    origin: textFromXml(item, 'Origin'),
+    destination: textFromXml(item, 'Destination'),
+    due_in: Number.isNaN(due) ? null : due,
+    late: Number.isNaN(late) ? 0 : late,
+    expected_arrival: textFromXml(item, 'Exparrival'),
+    expected_departure: textFromXml(item, 'Expdepart'),
+    scheduled_arrival: textFromXml(item, 'Scharrival'),
+    scheduled_departure: textFromXml(item, 'Schdepart'),
+    direction: textFromXml(item, 'Direction'),
+    location_type: textFromXml(item, 'Locationtype')
+  };
+}
+
+async function fetchIrishRailDirect() {
+  const response = await fetch(IRISH_RAIL_URL + '&t=' + Date.now(), { cache: 'no-store' });
+  if (!response.ok) throw new Error('Irish Rail request failed');
+
+  const xmlText = await response.text();
+  const doc = new DOMParser().parseFromString(xmlText, 'text/xml');
+  const items = Array.from(doc.getElementsByTagName('objStationData'));
+
+  const departures = items
+    .map(xmlTrainToObject)
+    .filter(train => (train.origin || '').toLowerCase() === 'cobh' || (train.location_type || '').toLowerCase() === 'o' || (train.destination || '').toLowerCase() !== 'cobh')
+    .sort((a, b) => (a.due_in ?? 999) - (b.due_in ?? 999));
+
+  return {
+    ok: true,
+    station: 'Cobh',
+    source: 'Irish Rail direct browser fetch',
+    updated_at: new Date().toISOString(),
+    message: 'Latest available station data fetched directly from Irish Rail.',
+    departures
+  };
+}
+
+async function fetchCachedGithubData() {
+  const response = await fetch(DATA_URL + '?t=' + Date.now(), { cache: 'no-store' });
+  if (!response.ok) throw new Error('Could not load cached train data');
+  return response.json();
+}
+
+async function getTrainData() {
+  try {
+    return await fetchIrishRailDirect();
+  } catch (directError) {
+    const cached = await fetchCachedGithubData();
+    cached.message = cached.message || 'Using cached train data.';
+    cached.used_cache = true;
+    return cached;
+  }
+}
 
 function rowHtml(train) {
   const due = train.due_in !== null && train.due_in !== undefined ? train.due_in + ' min' : '-';
@@ -76,20 +141,14 @@ function updateTrainFreshness(data) {
     return;
   }
 
-  if (age <= 20) {
-    statusText.textContent = 'Showing latest available Cobh station data.';
-    statusDot.className = 'status-dot ok';
+  if (data.used_cache) {
+    statusText.textContent = 'Showing cached train data. Direct Irish Rail update unavailable.';
+    statusDot.className = age <= 60 ? 'status-dot warn' : 'status-dot error';
     return;
   }
 
-  if (age <= 60) {
-    statusText.textContent = 'Train data may be delayed.';
-    statusDot.className = 'status-dot warn';
-    return;
-  }
-
-  statusText.textContent = 'Train data is out of date.';
-  statusDot.className = 'status-dot error';
+  statusText.textContent = 'Showing latest available Cobh station data.';
+  statusDot.className = 'status-dot ok';
 }
 
 function getDublinNow() {
@@ -170,10 +229,7 @@ function loadBusBoard() {
 
 async function loadBoard() {
   try {
-    const response = await fetch(DATA_URL + '?t=' + Date.now(), { cache: 'no-store' });
-    if (!response.ok) throw new Error('Could not load train data');
-    const data = await response.json();
-
+    const data = await getTrainData();
     const departures = data.departures || [];
 
     renderTrainTable(departuresTable, departures);
