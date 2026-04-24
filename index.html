@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cobh Train Times | The Arch</title>
+  <title>Cobh Transport Times | The Arch</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <main class="board" aria-live="polite">
     <header class="board-header">
       <div>
-        <p class="eyebrow">Irish Rail updates</p>
-        <h1>Cobh train times</h1>
+        <p class="eyebrow">Cobh transport updates</p>
+        <h1>Cobh transport times</h1>
       </div>
       <div class="brand">The Arch</div>
     </header>
@@ -19,14 +19,14 @@
     <section class="status-card" id="statusCard">
       <div>
         <span class="status-dot" id="statusDot"></span>
-        <span id="statusText">Loading train updates…</span>
+        <span id="statusText">Loading transport updates…</span>
       </div>
       <div id="lastUpdated">Last updated: —</div>
     </section>
 
     <section class="section-block">
       <div class="section-title">
-        <h2>Departures from Cobh</h2>
+        <h2>Train departures from Cobh</h2>
         <span id="departureCount">—</span>
       </div>
       <div class="table" id="departuresTable">
@@ -42,7 +42,7 @@
 
     <section class="section-block compact">
       <div class="section-title">
-        <h2>Arrivals into Cobh</h2>
+        <h2>Train arrivals into Cobh</h2>
         <span id="arrivalCount">—</span>
       </div>
       <div class="table" id="arrivalsTable">
@@ -56,8 +56,34 @@
       </div>
     </section>
 
+    <section class="section-block bus-block">
+      <div class="section-title">
+        <div>
+          <h2>Bus 200 from Park Lane, Lake Road</h2>
+          <p class="section-note">Scheduled Cobh Connect times. Live bus tracking is not connected yet.</p>
+        </div>
+        <span id="busUpdated">Scheduled</span>
+      </div>
+      <div class="bus-grid">
+        <div>
+          <div class="mini-title">Toward Cork</div>
+          <div class="table bus-table" id="busToCorkTable">
+            <div class="table-row table-head bus-row"><div>Destination</div><div>Due</div><div>Departure</div></div>
+            <div class="empty">Loading…</div>
+          </div>
+        </div>
+        <div>
+          <div class="mini-title">Toward Cobh</div>
+          <div class="table bus-table" id="busToCobhTable">
+            <div class="table-row table-head bus-row"><div>Destination</div><div>Due</div><div>Departure</div></div>
+            <div class="empty">Loading…</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <footer>
-      <p>Times use Irish Rail real-time data where available. For the Cork–Cobh line, some services may show scheduled times only.</p>
+      <p>Train times use Irish Rail real-time data where available. For the Cork–Cobh line, some services may show scheduled times only. Bus 200 times are scheduled Cobh Connect departures from Park Lane, Lake Road.</p>
     </footer>
   </main>
 
