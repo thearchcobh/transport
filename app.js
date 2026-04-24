@@ -1,4 +1,5 @@
 const DATA_URL = 'data/cobh-trains.json';
+const BUS_SCHEDULE_URL = 'data/cobh-connect-schedule.json';
 const WORKER_URL = 'https://damp-violet-1053.jp-2b4.workers.dev/';
 
 const departuresTable = document.getElementById('departuresTable');
@@ -7,18 +8,6 @@ const statusDot = document.getElementById('statusDot');
 const lastUpdated = document.getElementById('lastUpdated');
 const busToCorkTable = document.getElementById('busToCorkTable');
 const busUpdated = document.getElementById('busUpdated');
-
-const BUS_SCHEDULES = {
-  weekday: {
-    toCork: ['05:50','06:20','06:50','07:20','07:50','08:20','08:50','09:20','09:50','10:20','10:50','11:20','11:50','12:20','12:50','13:20','13:50','14:20','14:50','15:20','15:50','16:20','16:50','17:20','17:50','18:20','18:50','19:20','19:50','20:20','20:50','21:20','21:50','22:20','22:50','23:20','23:35']
-  },
-  saturday: {
-    toCork: ['07:50','08:20','08:50','09:20','09:50','10:20','10:50','11:20','11:50','12:20','12:50','13:20','13:50','14:20','14:50','15:20','15:50','16:20','16:50','17:20','17:50','18:20','18:50','19:20','19:50','20:20','20:50','21:20','21:50','22:20','22:50','23:20','23:35']
-  },
-  sunday: {
-    toCork: ['07:50','08:50','09:50','10:50','11:50','12:50','13:50','14:50','15:50','16:50','17:50','18:50','19:50','20:50','21:50','22:35']
-  }
-};
 
 async function fetchWorkerData() {
   const response = await fetch(WORKER_URL + '?t=' + Date.now(), { cache: 'no-store' });
@@ -29,6 +18,12 @@ async function fetchWorkerData() {
 async function fetchCachedGithubData() {
   const response = await fetch(DATA_URL + '?t=' + Date.now(), { cache: 'no-store' });
   if (!response.ok) throw new Error('Could not load cached train data');
+  return response.json();
+}
+
+async function fetchBusSchedule() {
+  const response = await fetch(BUS_SCHEDULE_URL + '?t=' + Date.now(), { cache: 'no-store' });
+  if (!response.ok) throw new Error('Could not load Cobh Connect schedule');
   return response.json();
 }
 
@@ -115,22 +110,22 @@ function getDublinNow() {
     timeZone: 'Europe/Dublin',
     year: 'numeric', month: '2-digit', day: '2-digit',
     hour: '2-digit', minute: '2-digit', second: '2-digit',
-    hour12: false, weekday: 'short'
+    hour12: false, weekday: 'long'
   }).formatToParts(new Date()).reduce((acc, part) => {
     acc[part.type] = part.value;
     return acc;
   }, {});
 
   return {
-    weekday: parts.weekday,
+    weekday: parts.weekday.toLowerCase(),
     minutes: Number(parts.hour) * 60 + Number(parts.minute)
   };
 }
 
-function serviceDayKey(weekday) {
-  if (weekday === 'Sat') return 'saturday';
-  if (weekday === 'Sun') return 'sunday';
-  return 'weekday';
+function nextDayKey(day) {
+  const days = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+  const index = days.indexOf(day);
+  return days[(index + 1) % 7];
 }
 
 function minutesFromTime(time) {
@@ -138,23 +133,30 @@ function minutesFromTime(time) {
   return h * 60 + m;
 }
 
-function nextBusDepartures(times, count = 4) {
+function nextBusDepartures(scheduleData, count = 4) {
   const now = getDublinNow();
-  const todayKey = serviceDayKey(now.weekday);
-  const tomorrowKey = todayKey === 'weekday' ? 'weekday' : (todayKey === 'saturday' ? 'sunday' : 'weekday');
-  const todayRows = times.map(time => ({ time, due: minutesFromTime(time) - now.minutes }));
-  const futureToday = todayRows.filter(row => row.due >= 0);
+  const byDay = scheduleData.departures_by_day || {};
+  const todayTimes = byDay[now.weekday] || [];
+  const tomorrowTimes = byDay[nextDayKey(now.weekday)] || [];
+
+  const futureToday = todayTimes
+    .map(time => ({ time, due: minutesFromTime(time) - now.minutes }))
+    .filter(row => row.due >= 0);
 
   let rows = futureToday;
   if (rows.length < count) {
-    const tomorrowTimes = BUS_SCHEDULES[tomorrowKey].toCork;
-    rows = rows.concat(tomorrowTimes.map(time => ({ time, due: minutesFromTime(time) + 1440 - now.minutes })));
+    rows = rows.concat(tomorrowTimes.map(time => ({
+      time,
+      due: minutesFromTime(time) + 1440 - now.minutes
+    })));
   }
 
   return rows.slice(0, count).map(row => ({
-    destination: 'Cork',
+    destination: scheduleData.destination || 'Cork',
+    route: scheduleData.route_short_name || '200',
     due: row.due,
-    departure: row.time
+    departure: row.time,
+    stop_name: scheduleData.stop_name || 'Spy Hill'
   }));
 }
 
@@ -169,7 +171,7 @@ function renderBusTable(el, services) {
     const dueText = service.due >= 60 ? Math.floor(service.due / 60) + 'h ' + (service.due % 60) + 'm' : service.due + ' min';
     return `
       <div class="table-row bus-row">
-        <div><div class="destination">${service.destination}</div><div class="subtext">Route 200</div></div>
+        <div><div class="destination">${service.destination}</div><div class="subtext">Route ${service.route} from ${service.stop_name}</div></div>
         <div class="due">${dueText}</div>
         <div>${service.departure}</div>
       </div>
@@ -177,13 +179,15 @@ function renderBusTable(el, services) {
   }).join('');
 }
 
-function loadBusBoard() {
-  const now = getDublinNow();
-  const key = serviceDayKey(now.weekday);
-  const schedule = BUS_SCHEDULES[key];
-
-  renderBusTable(busToCorkTable, nextBusDepartures(schedule.toCork));
-  busUpdated.textContent = 'Scheduled';
+async function loadBusBoard() {
+  try {
+    const scheduleData = await fetchBusSchedule();
+    renderBusTable(busToCorkTable, nextBusDepartures(scheduleData));
+    busUpdated.textContent = 'Scheduled from GTFS';
+  } catch (error) {
+    renderBusTable(busToCorkTable, []);
+    busUpdated.textContent = 'Bus schedule unavailable';
+  }
 }
 
 async function loadBoard() {
