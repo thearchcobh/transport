@@ -1,5 +1,5 @@
 const DATA_URL = 'data/cobh-trains.json';
-const IRISH_RAIL_URL = 'https://api.irishrail.ie/realtime/realtime.asmx/getStationDataByNameXML_withNumMins?StationDesc=Cobh&NumMins=90';
+const WORKER_URL = 'https://damp-violet-1053.jp-2b4.workers.dev/';
 
 const departuresTable = document.getElementById('departuresTable');
 const statusText = document.getElementById('statusText');
@@ -20,51 +20,10 @@ const BUS_SCHEDULES = {
   }
 };
 
-function textFromXml(parent, tagName) {
-  const node = parent.getElementsByTagName(tagName)[0];
-  return node && node.textContent ? node.textContent.trim() : null;
-}
-
-function xmlTrainToObject(item) {
-  const due = Number(textFromXml(item, 'Duein'));
-  const late = Number(textFromXml(item, 'Late'));
-
-  return {
-    train_code: textFromXml(item, 'Traincode'),
-    origin: textFromXml(item, 'Origin'),
-    destination: textFromXml(item, 'Destination'),
-    due_in: Number.isNaN(due) ? null : due,
-    late: Number.isNaN(late) ? 0 : late,
-    expected_arrival: textFromXml(item, 'Exparrival'),
-    expected_departure: textFromXml(item, 'Expdepart'),
-    scheduled_arrival: textFromXml(item, 'Scharrival'),
-    scheduled_departure: textFromXml(item, 'Schdepart'),
-    direction: textFromXml(item, 'Direction'),
-    location_type: textFromXml(item, 'Locationtype')
-  };
-}
-
-async function fetchIrishRailDirect() {
-  const response = await fetch(IRISH_RAIL_URL + '&t=' + Date.now(), { cache: 'no-store' });
-  if (!response.ok) throw new Error('Irish Rail request failed');
-
-  const xmlText = await response.text();
-  const doc = new DOMParser().parseFromString(xmlText, 'text/xml');
-  const items = Array.from(doc.getElementsByTagName('objStationData'));
-
-  const departures = items
-    .map(xmlTrainToObject)
-    .filter(train => (train.origin || '').toLowerCase() === 'cobh' || (train.location_type || '').toLowerCase() === 'o' || (train.destination || '').toLowerCase() !== 'cobh')
-    .sort((a, b) => (a.due_in ?? 999) - (b.due_in ?? 999));
-
-  return {
-    ok: true,
-    station: 'Cobh',
-    source: 'Irish Rail direct browser fetch',
-    updated_at: new Date().toISOString(),
-    message: 'Latest available station data fetched directly from Irish Rail.',
-    departures
-  };
+async function fetchWorkerData() {
+  const response = await fetch(WORKER_URL + '?t=' + Date.now(), { cache: 'no-store' });
+  if (!response.ok) throw new Error('Could not load Worker train data');
+  return response.json();
 }
 
 async function fetchCachedGithubData() {
@@ -75,8 +34,8 @@ async function fetchCachedGithubData() {
 
 async function getTrainData() {
   try {
-    return await fetchIrishRailDirect();
-  } catch (directError) {
+    return await fetchWorkerData();
+  } catch (workerError) {
     const cached = await fetchCachedGithubData();
     cached.message = cached.message || 'Using cached train data.';
     cached.used_cache = true;
@@ -142,7 +101,7 @@ function updateTrainFreshness(data) {
   }
 
   if (data.used_cache) {
-    statusText.textContent = 'Showing cached train data. Direct Irish Rail update unavailable.';
+    statusText.textContent = 'Showing cached train data. Live Worker update unavailable.';
     statusDot.className = age <= 60 ? 'status-dot warn' : 'status-dot error';
     return;
   }
