@@ -2,36 +2,8 @@
   "ok": true,
   "station": "Cobh",
   "source": "Irish Rail real-time API",
-  "updated_at": "2026-04-29T22:14:10.631179+00:00",
+  "updated_at": "2026-04-29T23:12:59.372160+00:00",
   "message": "Latest available station data.",
-  "departures": [
-    {
-      "train_code": "B545",
-      "origin": "Cobh",
-      "destination": "Cork",
-      "due_in": 16,
-      "late": 0,
-      "expected_arrival": "00:00",
-      "expected_departure": "23:30",
-      "scheduled_arrival": "00:00",
-      "scheduled_departure": "23:30",
-      "direction": "To Cork",
-      "location_type": "O"
-    }
-  ],
-  "arrivals": [
-    {
-      "train_code": "B541",
-      "origin": "Cork",
-      "destination": "Cobh",
-      "due_in": 12,
-      "late": 0,
-      "expected_arrival": "23:26",
-      "expected_departure": "00:00",
-      "scheduled_arrival": "23:26",
-      "scheduled_departure": "00:00",
-      "direction": "To Cobh",
-      "location_type": "D"
-    }
-  ]
+  "departures": [],
+  "arrivals": []
 }
