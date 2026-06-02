@@ -1,63 +1,9 @@
 {
-  "ok": true,
+  "ok": false,
   "station": "Cobh",
   "source": "Irish Rail real-time API",
-  "updated_at": "2026-06-02T18:55:42.303599+00:00",
-  "message": "Latest available station data.",
-  "departures": [
-    {
-      "train_code": "P535",
-      "origin": "Cobh",
-      "destination": "Cork",
-      "due_in": 5,
-      "late": 0,
-      "expected_arrival": "00:00",
-      "expected_departure": "20:00",
-      "scheduled_arrival": "00:00",
-      "scheduled_departure": "20:00",
-      "direction": "To Cork",
-      "location_type": "O"
-    },
-    {
-      "train_code": "P536",
-      "origin": "Cobh",
-      "destination": "Cork",
-      "due_in": 35,
-      "late": 0,
-      "expected_arrival": "00:00",
-      "expected_departure": "20:30",
-      "scheduled_arrival": "00:00",
-      "scheduled_departure": "20:30",
-      "direction": "To Cork",
-      "location_type": "O"
-    }
-  ],
-  "arrivals": [
-    {
-      "train_code": "D535",
-      "origin": "Cork",
-      "destination": "Cobh",
-      "due_in": 1,
-      "late": 0,
-      "expected_arrival": "19:56",
-      "expected_departure": "00:00",
-      "scheduled_arrival": "19:56",
-      "scheduled_departure": "00:00",
-      "direction": "To Cobh",
-      "location_type": "D"
-    },
-    {
-      "train_code": "D537",
-      "origin": "Mallow",
-      "destination": "Cobh",
-      "due_in": 31,
-      "late": 0,
-      "expected_arrival": "20:26",
-      "expected_departure": "00:00",
-      "scheduled_arrival": "20:26",
-      "scheduled_departure": "00:00",
-      "direction": "To Cobh",
-      "location_type": "D"
-    }
-  ]
+  "updated_at": "2026-06-02T21:51:01.585636+00:00",
+  "message": "Failed to fetch train data: <urlopen error timed out>",
+  "departures": [],
+  "arrivals": []
 }
