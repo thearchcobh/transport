@@ -2,8 +2,75 @@
   "ok": true,
   "station": "Cobh",
   "source": "Irish Rail real-time API",
-  "updated_at": "2026-06-14T03:45:30.656517+00:00",
+  "updated_at": "2026-06-14T08:04:30.041860+00:00",
   "message": "Latest available station data.",
-  "departures": [],
-  "arrivals": []
+  "departures": [
+    {
+      "train_code": "B903",
+      "origin": "Cobh",
+      "destination": "Cork",
+      "due_in": 26,
+      "late": 0,
+      "expected_arrival": "00:00",
+      "expected_departure": "09:30",
+      "scheduled_arrival": "00:00",
+      "scheduled_departure": "09:30",
+      "direction": "To Cork",
+      "location_type": "O"
+    },
+    {
+      "train_code": "B921",
+      "origin": "Cobh",
+      "destination": "Cork",
+      "due_in": 26,
+      "late": 0,
+      "expected_arrival": "00:00",
+      "expected_departure": "09:30",
+      "scheduled_arrival": "00:00",
+      "scheduled_departure": "09:30",
+      "direction": "To Cork",
+      "location_type": "O"
+    },
+    {
+      "train_code": "B904",
+      "origin": "Cobh",
+      "destination": "Cork",
+      "due_in": 86,
+      "late": 0,
+      "expected_arrival": "00:00",
+      "expected_departure": "10:30",
+      "scheduled_arrival": "00:00",
+      "scheduled_departure": "10:30",
+      "direction": "To Cork",
+      "location_type": "O"
+    },
+    {
+      "train_code": "B922",
+      "origin": "Cobh",
+      "destination": "Cork",
+      "due_in": 86,
+      "late": 0,
+      "expected_arrival": "00:00",
+      "expected_departure": "10:30",
+      "scheduled_arrival": "00:00",
+      "scheduled_departure": "10:30",
+      "direction": "To Cork",
+      "location_type": "O"
+    }
+  ],
+  "arrivals": [
+    {
+      "train_code": "B503",
+      "origin": "Cork",
+      "destination": "Cobh",
+      "due_in": 35,
+      "late": 0,
+      "expected_arrival": "09:39",
+      "expected_departure": "00:00",
+      "scheduled_arrival": "09:39",
+      "scheduled_departure": "00:00",
+      "direction": "To Cobh",
+      "location_type": "D"
+    }
+  ]
 }
