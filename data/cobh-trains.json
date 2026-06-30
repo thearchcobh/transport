@@ -2,8 +2,88 @@
   "ok": true,
   "station": "Cobh",
   "source": "Irish Rail real-time API",
-  "updated_at": "2026-06-30T01:51:39.982655+00:00",
+  "updated_at": "2026-06-30T06:04:08.977733+00:00",
   "message": "Latest available station data.",
-  "departures": [],
-  "arrivals": []
+  "departures": [
+    {
+      "train_code": "P505",
+      "origin": "Cobh",
+      "destination": "Cork",
+      "due_in": 26,
+      "late": 0,
+      "expected_arrival": "00:00",
+      "expected_departure": "07:30",
+      "scheduled_arrival": "00:00",
+      "scheduled_departure": "07:30",
+      "direction": "To Cork",
+      "location_type": "O"
+    },
+    {
+      "train_code": "P508",
+      "origin": "Cobh",
+      "destination": "Cork",
+      "due_in": 56,
+      "late": 0,
+      "expected_arrival": "00:00",
+      "expected_departure": "08:00",
+      "scheduled_arrival": "00:00",
+      "scheduled_departure": "08:00",
+      "direction": "To Cork",
+      "location_type": "O"
+    },
+    {
+      "train_code": "P509",
+      "origin": "Cobh",
+      "destination": "Cork",
+      "due_in": 86,
+      "late": 0,
+      "expected_arrival": "00:00",
+      "expected_departure": "08:30",
+      "scheduled_arrival": "00:00",
+      "scheduled_departure": "08:30",
+      "direction": "To Cork",
+      "location_type": "O"
+    }
+  ],
+  "arrivals": [
+    {
+      "train_code": "D504",
+      "origin": "Cork",
+      "destination": "Cobh",
+      "due_in": 22,
+      "late": 0,
+      "expected_arrival": "07:26",
+      "expected_departure": "00:00",
+      "scheduled_arrival": "07:26",
+      "scheduled_departure": "00:00",
+      "direction": "To Cobh",
+      "location_type": "D"
+    },
+    {
+      "train_code": "D506",
+      "origin": "Cork",
+      "destination": "Cobh",
+      "due_in": 52,
+      "late": 0,
+      "expected_arrival": "07:56",
+      "expected_departure": "00:00",
+      "scheduled_arrival": "07:56",
+      "scheduled_departure": "00:00",
+      "direction": "To Cobh",
+      "location_type": "D"
+    },
+    {
+      "train_code": "D507",
+      "origin": "Cork",
+      "destination": "Cobh",
+      "due_in": 82,
+      "late": 0,
+      "expected_arrival": "08:26",
+      "expected_departure": "00:00",
+      "scheduled_arrival": "08:26",
+      "scheduled_departure": "00:00",
+      "direction": "To Cobh",
+      "location_type": "D"
+    }
+  ]
 }
