@@ -1,37 +1,9 @@
 {
-  "ok": true,
+  "ok": false,
   "station": "Cobh",
   "source": "Irish Rail real-time API",
-  "updated_at": "2026-07-04T04:47:24.545525+00:00",
-  "message": "Latest available station data.",
-  "departures": [
-    {
-      "train_code": "P502",
-      "origin": "Cobh",
-      "destination": "Cork",
-      "due_in": 43,
-      "late": 0,
-      "expected_arrival": "00:00",
-      "expected_departure": "06:30",
-      "scheduled_arrival": "00:00",
-      "scheduled_departure": "06:30",
-      "direction": "To Cork",
-      "location_type": "O"
-    }
-  ],
-  "arrivals": [
-    {
-      "train_code": "D502",
-      "origin": "Cork",
-      "destination": "Cobh",
-      "due_in": 39,
-      "late": 0,
-      "expected_arrival": "06:26",
-      "expected_departure": "00:00",
-      "scheduled_arrival": "06:26",
-      "scheduled_departure": "00:00",
-      "direction": "To Cobh",
-      "location_type": "D"
-    }
-  ]
+  "updated_at": "2026-07-04T07:33:10.036397+00:00",
+  "message": "Failed to fetch train data: <urlopen error timed out>",
+  "departures": [],
+  "arrivals": []
 }
