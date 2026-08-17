@@ -1,9 +1,9 @@
 {
-  "ok": true,
+  "ok": false,
   "station": "Cobh",
   "source": "Irish Rail real-time API",
-  "updated_at": "2026-08-17T22:00:15.124549+00:00",
-  "message": "Latest available station data.",
+  "updated_at": "2026-08-17T22:34:41.682561+00:00",
+  "message": "Failed to fetch train data: <urlopen error timed out>",
   "departures": [],
   "arrivals": []
 }
