@@ -2,14 +2,14 @@
   "ok": true,
   "station": "Cobh",
   "source": "Irish Rail real-time API",
-  "updated_at": "2026-08-19T04:18:19.679393+00:00",
+  "updated_at": "2026-08-19T04:56:50.143939+00:00",
   "message": "Latest available station data.",
   "departures": [
     {
       "train_code": "P501",
       "origin": "Cobh",
       "destination": "Cork",
-      "due_in": 42,
+      "due_in": 4,
       "late": 0,
       "expected_arrival": "00:00",
       "expected_departure": "06:00",
@@ -17,18 +17,44 @@
       "scheduled_departure": "06:00",
       "direction": "To Cork",
       "location_type": "O"
+    },
+    {
+      "train_code": "P504",
+      "origin": "Cobh",
+      "destination": "Cork",
+      "due_in": 64,
+      "late": 0,
+      "expected_arrival": "00:00",
+      "expected_departure": "07:00",
+      "scheduled_arrival": "00:00",
+      "scheduled_departure": "07:00",
+      "direction": "To Cork",
+      "location_type": "O"
     }
   ],
   "arrivals": [
     {
-      "train_code": "D501",
+      "train_code": "D503",
       "origin": "Cork",
       "destination": "Cobh",
-      "due_in": 38,
+      "due_in": 60,
       "late": 0,
-      "expected_arrival": "05:56",
+      "expected_arrival": "06:56",
       "expected_departure": "00:00",
-      "scheduled_arrival": "05:56",
+      "scheduled_arrival": "06:56",
+      "scheduled_departure": "00:00",
+      "direction": "To Cobh",
+      "location_type": "D"
+    },
+    {
+      "train_code": "D504",
+      "origin": "Cork",
+      "destination": "Cobh",
+      "due_in": 90,
+      "late": 0,
+      "expected_arrival": "07:26",
+      "expected_departure": "00:00",
+      "scheduled_arrival": "07:26",
       "scheduled_departure": "00:00",
       "direction": "To Cobh",
       "location_type": "D"
