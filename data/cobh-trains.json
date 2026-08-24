@@ -1,9 +1,89 @@
 {
-  "ok": false,
+  "ok": true,
   "station": "Cobh",
   "source": "Irish Rail real-time API",
-  "updated_at": "2026-08-24T11:55:45.057278+00:00",
-  "message": "Failed to fetch train data: <urlopen error timed out>",
-  "departures": [],
-  "arrivals": []
+  "updated_at": "2026-08-24T12:54:21.198477+00:00",
+  "message": "Latest available station data.",
+  "departures": [
+    {
+      "train_code": "P520",
+      "origin": "Cobh",
+      "destination": "Cork",
+      "due_in": 6,
+      "late": 0,
+      "expected_arrival": "00:00",
+      "expected_departure": "14:00",
+      "scheduled_arrival": "00:00",
+      "scheduled_departure": "14:00",
+      "direction": "To Cork",
+      "location_type": "O"
+    },
+    {
+      "train_code": "P521",
+      "origin": "Cobh",
+      "destination": "Cork",
+      "due_in": 36,
+      "late": 0,
+      "expected_arrival": "00:00",
+      "expected_departure": "14:30",
+      "scheduled_arrival": "00:00",
+      "scheduled_departure": "14:30",
+      "direction": "To Cork",
+      "location_type": "O"
+    },
+    {
+      "train_code": "P522",
+      "origin": "Cobh",
+      "destination": "Cork",
+      "due_in": 66,
+      "late": 0,
+      "expected_arrival": "00:00",
+      "expected_departure": "15:00",
+      "scheduled_arrival": "00:00",
+      "scheduled_departure": "15:00",
+      "direction": "To Cork",
+      "location_type": "O"
+    }
+  ],
+  "arrivals": [
+    {
+      "train_code": "D521",
+      "origin": "Cork",
+      "destination": "Cobh",
+      "due_in": 2,
+      "late": 0,
+      "expected_arrival": "13:56",
+      "expected_departure": "00:00",
+      "scheduled_arrival": "13:56",
+      "scheduled_departure": "00:00",
+      "direction": "To Cobh",
+      "location_type": "D"
+    },
+    {
+      "train_code": "D522",
+      "origin": "Cork",
+      "destination": "Cobh",
+      "due_in": 32,
+      "late": 0,
+      "expected_arrival": "14:26",
+      "expected_departure": "00:00",
+      "scheduled_arrival": "14:26",
+      "scheduled_departure": "00:00",
+      "direction": "To Cobh",
+      "location_type": "D"
+    },
+    {
+      "train_code": "D523",
+      "origin": "Cork",
+      "destination": "Cobh",
+      "due_in": 62,
+      "late": 0,
+      "expected_arrival": "14:56",
+      "expected_departure": "00:00",
+      "scheduled_arrival": "14:56",
+      "scheduled_departure": "00:00",
+      "direction": "To Cobh",
+      "location_type": "D"
+    }
+  ]
 }
