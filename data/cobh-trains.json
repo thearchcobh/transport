@@ -2,22 +2,8 @@
   "ok": true,
   "station": "Cobh",
   "source": "Irish Rail real-time API",
-  "updated_at": "2026-09-20T22:03:21.733395+00:00",
+  "updated_at": "2026-09-21T00:11:26.454893+00:00",
   "message": "Latest available station data.",
   "departures": [],
-  "arrivals": [
-    {
-      "train_code": "D526",
-      "origin": "Cork",
-      "destination": "Cobh",
-      "due_in": 23,
-      "late": 0,
-      "expected_arrival": "23:26",
-      "expected_departure": "00:00",
-      "scheduled_arrival": "23:26",
-      "scheduled_departure": "00:00",
-      "direction": "To Cobh",
-      "location_type": "D"
-    }
-  ]
+  "arrivals": []
 }
